@@ -22,12 +22,13 @@ class UserController extends CoreController {
     }
 
     public function signIn() {
-        if($_POST) {
+        if($_POST || isset($_SESSION['connectedUser'])) {
             if ($user = User::findByEmail(htmlspecialchars($_POST['inputEmail']))) {
                 if (password_verify($_POST['inputPassword'], $user->getPassword())) {
-                    if(!$_SESSION['connectedUser']) {
-                        $_SESSION['connectedUser'] = $user;
-                    }
+                    $_SESSION['connectedUser'] = $user;
+                    $this->render('home', [
+                        'page_title' => "Accueil"
+                    ]);
                 } else {
                     $this->render('signin', [
                         'page_title' => "Se connecter",
@@ -43,6 +44,19 @@ class UserController extends CoreController {
         } else {
             $this->render('signin', [
                 'page_title' => "Se connecter"
+            ]);
+        }
+    }
+
+    public function signOut() {
+        if(isset($_SESSION['connectedUser'])) {
+            unset($_SESSION['connectedUser']);
+            $this->render('home', [
+                'page_title' => "Accueil"
+            ]);
+        } else {
+            $this->render('home', [
+                'page_title' => "Accueil"
             ]);
         }
     }

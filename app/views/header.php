@@ -23,12 +23,21 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign_up">S'inscrire</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign_in">Se connecter</a>
-                    </li>
+                    <?php if (isset($_SESSION['connectedUser'])): ?> 
+                        <li class="nav-item">
+                            <a class="nav-link" href="/profile">Mon profil</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/sign_out">Se déconnecter</a>
+                        </li>
+                    <?php else: ?>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/sign_up">S'inscrire</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/sign_in">Se connecter</a>
+                        </li>
+                    <?php endif; ?>
                 </ul>
             </div>
         </nav>
