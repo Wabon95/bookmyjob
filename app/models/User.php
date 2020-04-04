@@ -6,10 +6,10 @@ use App\Utils\Database;
 use App\Utils\Traits\modelsDatabasesFunctions;
 
 class User extends Database {
-    private $id;
-    private $email;
-    private $role;
-    private $password;
+    private int $id;
+    private string $email;
+    private int $role;
+    private string $password;
 
     use modelsDatabasesFunctions;
 

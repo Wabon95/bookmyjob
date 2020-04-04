@@ -13,6 +13,8 @@ $router->map('POST', '/sign_in', 'UserController#signIn'); // Traitement du form
 
 $router->map('GET', '/sign_out', 'UserController#signOut'); // Déconnexion
 
+$router->map('GET', '/job_create', 'JobController#create'); // Formulaire d'ajout d'un job
+$router->map('POST', '/job_add', 'JobController#add'); // Traitement du formulaire d'ajout d'un job
 
 if ($match = $router->match()) {
     list($controller, $action) = explode('#', $match['target']);

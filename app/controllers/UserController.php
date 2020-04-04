@@ -22,42 +22,28 @@ class UserController extends CoreController {
     }
 
     public function signIn() {
-        if($_POST || isset($_SESSION['connectedUser'])) {
-            if ($user = User::findByEmail(htmlspecialchars($_POST['inputEmail']))) {
-                if (password_verify($_POST['inputPassword'], $user->getPassword())) {
-                    $_SESSION['connectedUser'] = $user;
-                    $this->render('home', [
-                        'page_title' => "Accueil"
-                    ]);
-                } else {
-                    $this->render('signin', [
-                        'page_title' => "Se connecter",
-                        'error' => "Votre mot de passe est incorrect."
-                    ]);
-                }
-            } else {
-                $this->render('signin', [
-                    'page_title' => "Se connecter",
-                    'error' => "Cet utilisateur n'existe pas."
-                ]);
-            }
-        } else {
+        if (!$_POST && !isset($_SESSION['connectedUser'])) {
             $this->render('signin', [
                 'page_title' => "Se connecter"
             ]);
+        } elseif (isset($_SESSION['connectedUser'])) {
+            $this->redirect('/');
+        } elseif ($_POST) {
+            if ($user = User::findByEmail(htmlspecialchars($_POST['inputEmail']))) {
+                if (password_verify($_POST['inputPassword'], $user->getPassword())) {
+                    $_SESSION['connectedUser'] = $user;
+                    $this->redirect('/');
+                }
+            }
         }
     }
 
     public function signOut() {
         if(isset($_SESSION['connectedUser'])) {
             unset($_SESSION['connectedUser']);
-            $this->render('home', [
-                'page_title' => "Accueil"
-            ]);
+            $this->redirect('/');
         } else {
-            $this->render('home', [
-                'page_title' => "Accueil"
-            ]);
+            $this->redirect('/');
         }
     }
 }
